@@ -1,8 +1,10 @@
-﻿using BenchmarkDotNet.Attributes;
+﻿using Benchmark.Database;
+using Benchmark.Models;
+using BenchmarkDotNet.Attributes;
 
-namespace Benchmark
+namespace Benchmark.Benchmarks
 {
-    public class DbContextBenchmark
+    public class SaveChangesNoEntityBase
     {
         private BenchmarkDbContext _dbContext;
 
@@ -10,14 +12,14 @@ namespace Benchmark
         public void Setup()
         {
             _dbContext = new BenchmarkDbContext();
-
-            for (int i = 0; i < 10000; i++)
-                _dbContext.BenchmarkRecordNoBases.Add(new BenchmarkRecordNoBase());
         }
 
         [Benchmark]
-        public void UpdateEntityBaseFieldsBenchmark()
+        public void No_EntityBase_SaveChanges()
         {
+            for (int i = 0; i < 10000; i++)
+                _dbContext.BenchmarkRecordNoBases.Add(new BenchmarkRecordNoBase());
+
             _dbContext.SaveChanges();
         }
 

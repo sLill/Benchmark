@@ -1,27 +1,50 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Benchmark.Migrations
 {
     /// <inheritdoc />
-    public partial class NotificationTables : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "BenchmarkRecordNoBases",
+                columns: table => new
+                {
+                    BenchmarkDbId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BenchmarkRecordNoBases", x => x.BenchmarkDbId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BenchmarkRecords",
+                columns: table => new
+                {
+                    BenchmarkDbId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    ModifiedOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BenchmarkRecords", x => x.BenchmarkDbId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Notifications",
                 columns: table => new
                 {
                     NotificationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Source = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SourceId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Source = table.Column<string>(type: "NVARCHAR(128)", nullable: false),
+                    SourceId = table.Column<string>(type: "NVARCHAR(255)", nullable: false),
+                    Name = table.Column<string>(type: "NVARCHAR(255)", nullable: false),
                     ResponseRequired = table.Column<bool>(type: "bit", nullable: false),
                     DisplayTimeSeconds = table.Column<int>(type: "int", nullable: true),
-                    QrCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    QrCode = table.Column<string>(type: "NVARCHAR(MAX)", nullable: true),
                     DeliveredDateUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     ExpirationDateUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     CreatedOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
@@ -38,9 +61,9 @@ namespace Benchmark.Migrations
                 {
                     NotificationBodyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     NotificationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Locale = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Text = table.Column<string>(type: "NVARCHAR(MAX)", nullable: false),
+                    Color = table.Column<string>(type: "NVARCHAR(64)", nullable: false),
+                    Locale = table.Column<string>(type: "NVARCHAR(32)", nullable: false),
                     CreatedOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     ModifiedOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
                 },
@@ -61,10 +84,10 @@ namespace Benchmark.Migrations
                 {
                     NotificationResponseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     NotificationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Locale = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Text = table.Column<string>(type: "NVARCHAR(MAX)", nullable: false),
+                    Color = table.Column<string>(type: "NVARCHAR(64)", nullable: false),
+                    Value = table.Column<string>(type: "NVARCHAR(MAX)", nullable: false),
+                    Locale = table.Column<string>(type: "NVARCHAR(32)", nullable: false),
                     CreatedOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     ModifiedOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
                 },
@@ -85,8 +108,8 @@ namespace Benchmark.Migrations
                 {
                     NotificationTitleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     NotificationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Locale = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Text = table.Column<string>(type: "NVARCHAR(MAX)", nullable: false),
+                    Locale = table.Column<string>(type: "NVARCHAR(32)", nullable: false),
                     CreatedOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     ModifiedOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
                 },
@@ -186,6 +209,12 @@ namespace Benchmark.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "BenchmarkRecordNoBases");
+
+            migrationBuilder.DropTable(
+                name: "BenchmarkRecords");
+
             migrationBuilder.DropTable(
                 name: "NotificationBodies");
 
